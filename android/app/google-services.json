@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "289622237435",
+    "project_id": "universityhelper-4bc4b",
+    "storage_bucket": "universityhelper-4bc4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289622237435:android:49853ce9b637049ac8105e",
+        "android_client_info": {
+          "package_name": "com.example.university_helper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB58oN57vEdWBGgVtWo8XIl7RYoQpKsD4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
