@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:university_helper/services/notification_service.dart';
 import '../modules/exam.dart';
+import '../modules/location.dart';
 
 class NewExam extends StatefulWidget {
   final Function addExam;
@@ -16,6 +17,18 @@ class _NewExamState extends State<NewExam> {
 
   final _subjectController = TextEditingController();
   DateTime? _examDate;
+
+  late Location location;
+  int _selectedLocationIndex = 0;
+  List<Location> locations = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    locations = Location.getLocations();
+    location = locations.first;
+  }
 
   void _presentDatePicker() {
     showDatePicker(
@@ -61,6 +74,7 @@ class _NewExamState extends State<NewExam> {
       Random().nextInt(1000),
       enteredSubject,
       _examDate!,
+      location
     );
 
     widget.addExam(newExam);
@@ -74,7 +88,7 @@ class _NewExamState extends State<NewExam> {
       padding: const EdgeInsets.all(8),
       child: Column(children: [
         const Text("Add new exam",
-            style: TextStyle(fontSize: 20, color: Colors.lightBlueAccent)),
+            style: TextStyle(fontSize: 20, color: Colors.purple)),
         TextField(
           controller: _subjectController,
           decoration: const InputDecoration(
@@ -84,6 +98,7 @@ class _NewExamState extends State<NewExam> {
           onSubmitted: (_) => _submitData,
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             if (_examDate == null)
               const Text(
@@ -101,14 +116,29 @@ class _NewExamState extends State<NewExam> {
             ),
           ],
         ),
+        DropdownButton<int>(
+          value: _selectedLocationIndex,
+          onChanged: (int? newValue) {
+            setState(() {
+              _selectedLocationIndex = newValue ?? 0;
+              location = locations[_selectedLocationIndex];
+            });
+          },
+          items: locations.asMap().entries.map<DropdownMenuItem<int>>((entry) {
+            return DropdownMenuItem<int>(
+              value: entry.key,
+              child: Text(entry.value.locationName),
+            );
+          }).toList(),
+        ),
         ElevatedButton(
             onPressed: _submitData,
             style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.blue,
+              foregroundColor: Colors.purple,
               backgroundColor: Colors.white,
               shadowColor: Colors.grey,
               elevation: 5,
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(32.0),
               ),

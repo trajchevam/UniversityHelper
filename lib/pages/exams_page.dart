@@ -4,10 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:university_helper/modules/exam.dart';
 import 'package:university_helper/pages/calendar.dart';
 import 'package:university_helper/pages/login_register_page.dart';
+import 'package:university_helper/pages/google_maps_page.dart';
 import 'package:university_helper/pages/new_exam_page.dart';
 import 'package:university_helper/pages/sign_out_page.dart';
 
 import '../modules/exam_provider.dart';
+import '../modules/location.dart';
 
 
 class ExamsPage extends StatefulWidget {
@@ -18,7 +20,10 @@ class ExamsPage extends StatefulWidget {
 }
 
 class _ExamsPageState extends State<ExamsPage> {
-  final List<Exam> _exams = [];
+  final List<Exam> _exams = [
+    Exam(1, "Strukturno programiranje", DateTime.now(), Location.location1),
+    Exam(2, "Napredno programiranje", DateTime.now(), Location.location2),
+  ];
 
   String? errorMessage = '';
 
@@ -73,6 +78,13 @@ class _ExamsPageState extends State<ExamsPage> {
                     MaterialPageRoute(builder: (context) => CalendarPage(exams: _exams,)));
                 },
             ),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => GoogleMaps(_exams)));
+                },
+                icon: const Icon(Icons.location_on),
+                iconSize: 30, color: Colors.white,),
             ElevatedButton(
               onPressed: _signOut,
               child: const Text("Sign out"),
@@ -89,9 +101,9 @@ class _ExamsPageState extends State<ExamsPage> {
         ]),
         body: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Number of columns in the grid
-            crossAxisSpacing: 8.0, // Spacing between columns
-            mainAxisSpacing: 8.0, // Spacing between rows
+            crossAxisCount: 2,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
           ),
           itemCount: _exams.length,
           itemBuilder: (context, index){
@@ -113,6 +125,8 @@ class _ExamsPageState extends State<ExamsPage> {
                             fontWeight: FontWeight.w400),
                         textAlign: TextAlign.center,),
                     ),
+                    Text('${_exams[index].location.locationName}'),
+
                     IconButton(icon: Icon(Icons.delete_rounded), onPressed: () {
                         setState(() {
                           _exams.removeAt(index);
