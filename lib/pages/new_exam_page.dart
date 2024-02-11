@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:university_helper/services/notification_service.dart';
 import '../modules/exam.dart';
 
 class NewExam extends StatefulWidget {
@@ -63,6 +64,7 @@ class _NewExamState extends State<NewExam> {
     );
 
     widget.addExam(newExam);
+    NotificationService.sendNotification(newExam);
     Navigator.of(context).pop();
   }
 

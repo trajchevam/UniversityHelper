@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:university_helper/modules/exam.dart';
+import 'package:university_helper/pages/calendar.dart';
 import 'package:university_helper/pages/login_register_page.dart';
 import 'package:university_helper/pages/new_exam_page.dart';
 import 'package:university_helper/pages/sign_out_page.dart';
+
+import '../modules/exam_provider.dart';
 
 
 class ExamsPage extends StatefulWidget {
@@ -48,16 +52,26 @@ class _ExamsPageState extends State<ExamsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var examProvider = Provider.of<ExamProvider>(context);
+
     var isSignedIn = FirebaseAuth.instance.currentUser != null;
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Colors.purple,
             title: const Text('Exams',  style: TextStyle(color: Colors.white)), actions: [
           if (isSignedIn) ...[
             IconButton(
               icon: const Icon(Icons.add_circle),
               color: Colors.white,
               onPressed: _addExamFunction,
+            ),
+            IconButton(
+              icon: const Icon(Icons.calendar_month),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => CalendarPage(exams: _exams,)));
+                },
             ),
             ElevatedButton(
               onPressed: _signOut,
@@ -106,7 +120,7 @@ class _ExamsPageState extends State<ExamsPage> {
                       },)
                     ]),
                 decoration:
-                  BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(12.0)),
+                  BoxDecoration(color: Colors.pinkAccent, borderRadius: BorderRadius.circular(12.0)),
                   margin: EdgeInsets.all(10.0),
               );
             }
